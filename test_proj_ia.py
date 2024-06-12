@@ -1,10 +1,68 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn.cluster import KMeans
+from sklearn.cluster import AgglomerativeClustering, DBSCAN, KMeans
 from sklearn.metrics import davies_bouldin_score, silhouette_score
 import plotly.express as px
 
 
+# Chargement des données
+data = pd.read_csv("./Data_Arbre.csv")
+
+# Sélection des colonnes pertinentes et création d'une copie explicite
+data3 = data[['haut_tot','tronc_diam']].copy()
+
+# Vérification des types de données
+print(data3.dtypes)
+
+# Choix du nombre de clusters
+agglo = AgglomerativeClustering(n_clusters=3)
+
+# Appliquer le clustering
+data3['cluster'] = agglo.fit_predict(data3[['haut_tot','tronc_diam']])
+
+# Affichage des résultats
+plt.scatter(data3['haut_tot'], data3['tronc_diam'], c=data3['cluster'], cmap='viridis')
+plt.xlabel('haut_tot')
+plt.ylabel('tronc_diam')
+plt.title('Agglomerative Clustering')
+plt.show()
+
+# Sélection des colonnes pertinentes et création d'une copie explicite
+data2 = data[['haut_tot','tronc_diam']].copy()
+
+# Vérification des types de données
+print(data2.dtypes)
+
+# Choix des paramètres
+dbscan = DBSCAN(eps=0.1, min_samples=5)
+
+# Appliquer le clustering
+data2['cluster'] = dbscan.fit_predict(data2)
+
+# Affichage des résultats
+plt.scatter(data2['haut_tot'], data2['tronc_diam'], c=data2['cluster'], cmap='viridis')
+plt.xlabel('haut_tot')
+plt.ylabel('tronc_diam')
+plt.title('DBSCAN Clustering')
+plt.show()
+
+# Sélection des colonnes pertinentes
+data4 = data[['tronc_diam', 'haut_tot']]
+
+# Choix du nombre de clusters
+kmeans = KMeans(n_clusters=3, random_state=42)
+
+# Appliquer le clustering
+data4['cluster'] = kmeans.fit_predict(data4)
+
+# Affichage des résultats
+plt.scatter(data4['haut_tot'], data4['tronc_diam'], c=data4['cluster'], cmap='viridis')
+plt.xlabel('haut_tot')
+plt.ylabel('tronc_diam')
+plt.title('K-Means Clustering')
+plt.show()
+
+#########################################
 def courbe_inertie(K, inertias):
     plt.figure(figsize=(8, 5))
     plt.plot(K, inertias, 'bo-')
@@ -99,37 +157,3 @@ def main():
     fig.show()
     
 main()
-
-
-
-############################################################################
-#
-## Score de silhouette (Silhouette Score)
-#silhouette_scores = []
-#K = range(2, 11)
-#for k in K:
-#    kmeans = KMeans(n_clusters=k, random_state=42)
-#    cluster_labels = kmeans.fit_predict(data1)
-#    silhouette_avg = silhouette_score(data1, cluster_labels)
-#    silhouette_scores.append(silhouette_avg)
-#
-## Tracer le score de silhouette
-#plt.figure(figsize=(8, 5))
-#plt.plot(K, silhouette_scores, 'bo-')
-#plt.xlabel('Nombre de clusters K')
-#plt.ylabel('Score de silhouette')
-#plt.title('Score de silhouette pour déterminer le nombre optimal de clusters')
-#plt.show()
-#
-## Choix du nombre de clusters basé sur les résultats précédents, par exemple 3
-#optimal_k = 3
-#kmeans = KMeans(n_clusters=optimal_k, random_state=42)
-#data1['cluster'] = kmeans.fit_predict(data1)
-#
-## Affichage des résultats
-#plt.scatter(data1['haut_tot'], c=data1['cluster'], cmap='viridis')
-#plt.xlabel('Hauteur totale (haut_tot)')
-#plt.ylabel('?')
-#plt.title('K-Means Clustering avec K optimal')
-#plt.show()
-#
