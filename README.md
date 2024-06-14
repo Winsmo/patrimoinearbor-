@@ -1,6 +1,14 @@
-Enzo Laporte
-#Page git comprenant l'evolution de la partie: 
-#Besoin client 1 : Visualisation sur carte 
-#du projet IA patrimoine arboré A3 ISEN Brest
+Enzo Laporte - Client 1
+Ce projet analyse les données des arbres de Saint Quentin grace au techniques de clustering suivantes:
+- Agglomerative clustering
+-	DBSCAN
+-	K-means
+Détermine le nombre de clusters idéaux grace a la methode du coude, de la silhouette et de Davies-Bouldin
 
-Utilisation des techniques de clustering pour regrouper des données d'arbres (hauteur et diamètre du tronc) en clusters, évalue les résultats avec des métriques comme l'inertie, l'indice de Davies-Bouldin et le coefficient de silhouette, puis affiche les clusters sur une carte interactive
+Pour faire marcher ce projet:
+. Python 3.6
+. Bibliothèques 
+	-pandas
+	-matplotlib
+	-scikit-learn
+	-plotly
